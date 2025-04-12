@@ -17,7 +17,6 @@ describe("GET /api", () => {
     expect(endpoints).toEqual(endpointsJson);
   });
 });
-
 describe("POST /api/users/registration", () => {
   test("201:Server responds with a status of 201 after creating the resource", async () => {
     const newUser = {
@@ -69,7 +68,7 @@ describe("POST /api/users/login", () => {
 
     await request(app).post("/api/users/login").send(login).expect(200);
   });
-  test("400:Server responds with a bad request if user email is not found in database", async () => {
+  test("400:Server responds with a Bad Request if user email is not found in database", async () => {
     const login = {
       username: "Verity",
       email: "verity@email.com",
@@ -91,5 +90,22 @@ describe("POST /api/users/login", () => {
       body: { msg },
     } = await request(app).post("/api/users/login").send(login).expect(401);
     expect(msg).toBe("Unauthorised");
+  });
+});
+describe("GET /api/users/:email", () => {
+  test("200:Server responds with requested resource", async () => {
+    const {
+      body: { user },
+    } = await request(app).get("/api/users/kgresch6@prlog.org").expect(200);
+    const { username, email } = user;
+
+    expect(username).toBe("Karil");
+    expect(email).toBe("kgresch6@prlog.org");
+  });
+  test("404:Server responds with Resource Not Found for a valid request with no rows", async () => {
+    const {
+      body: { msg },
+    } = await request(app).get("/api/users/jersey@gmail.com").expect(404);
+    expect(msg).toBe("Resource Not Found");
   });
 });

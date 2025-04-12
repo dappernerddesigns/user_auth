@@ -28,3 +28,14 @@ exports.authenticateUser = async (payload) => {
     return Promise.reject({ status: 401, msg: "Unauthorised" });
   }
 };
+
+exports.fetchUser = async (email) => {
+  const { rows } = await db.query(
+    "SELECT username, email FROM users WHERE email=$1",
+    [email]
+  );
+  if (rows.length === 0) {
+    return Promise.reject({ status: 404, msg: "Resource Not Found" });
+  }
+  return rows[0];
+};
