@@ -20,18 +20,7 @@ To run this locally users must have:
 - node >version 20
 - rights to create databases
 
-### Required dependancies:
-- express
-- pg-format
-- pg
-- jest
-- jestsorted
-- supertest
-- dotenv
-- cors
-- bcrypt
-
-1 - Clone the repo and install all dependancies
+1 - Clone the repo and install all dependencies
 
 ```
 git clone https://github.com/dappernerddesigns/user_auth
@@ -39,7 +28,7 @@ cd user_auth
 npm i
 ```
 
-2 - Create .env.test and .env.development to hold `PGDATABASE` variables
+2 - Create .env.test and .env.development files in root to hold `PGDATABASE` variables
 
 ```
 // dev database, add to .env.development. Test db name found in setup.sql
