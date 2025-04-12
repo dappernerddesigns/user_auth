@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "listen.js",
   "scripts": {
     "test": "jest",
     "setup_dbs": "psql -f ./db/setup.sql",
