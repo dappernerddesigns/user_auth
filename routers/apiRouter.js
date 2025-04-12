@@ -1,7 +1,7 @@
 const apiRouter = require("express").Router();
 const usersRouter = require("./usersRouter");
 const endpoints = require("../endpoints.json");
-apiRouter.get("/api", (req, res) => {
+apiRouter.get("/", (req, res) => {
   res.status(200).send({ endpoints });
 });
 

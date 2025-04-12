@@ -5,8 +5,8 @@ const seed = async (users) => {
   await db.query(`DROP TABLE IF EXISTS users`);
   await db.query(`CREATE TABLE users(
     user_id SERIAL PRIMARY KEY,
-    username VARCHAR(30),
-    email VARCHAR(255),
+    username VARCHAR(30) UNIQUE,
+    email VARCHAR(255) UNIQUE,
     hashed_password TEXT)`);
 
   const formattedUsers = users.map(({ username, email, password }) => [

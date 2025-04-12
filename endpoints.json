@@ -1,5 +1,14 @@
 {
   "GET /api": {
     "description": "Serves up a json representation of all the available endpoints of the api"
+  },
+  "POST /api/users/registration": {
+    "description": "Creates a new user in the database, hashing a plain text password.",
+    "example payload": {
+      "username": "Jersey",
+      "email": "jersey@gmail.com",
+      "password": "password123"
+    },
+    "example Response": 201
   }
 }
