@@ -10,5 +10,17 @@
       "password": "password123"
     },
     "example Response": 201
+  },
+  "POST /api/users/login": {
+    "description": "Authenticates user details sent in payload.",
+    "example payload": {
+      "email": "jersey@gmail.com",
+      "password": "password123"
+    },
+    "example Response": 200
+  },
+  "Get /api/users/:email": {
+    "description": "Server responds with requested user's username and email.",
+    "example response": { "username": "Jersey", "email": "jersey@gmail.com" }
   }
 }
