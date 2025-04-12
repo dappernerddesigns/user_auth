@@ -10,7 +10,7 @@ If all unit tests pass, the latest commit will be deployed from Render - the liv
 
 ## 💫 Live api
 
-This api has been hosted on Render [here](https://user-auth-k2wn.onrender.com/api). As this is a free tier for the purpose of this repo, the service will spin down from inactivity and can take up to 50 seconds to respon.
+This api has been hosted on Render [here](https://user-auth-k2wn.onrender.com/api). As this is a free tier for the purpose of this repo, the service will spin down from inactivity and can take up to 50 seconds to respond.
 
 ## 💻 Local Setup
 
@@ -19,6 +19,17 @@ To run this locally users must have:
 - psql version 17
 - node >version 20
 - rights to create databases
+
+### Required dependancies:
+- express
+- pg-format
+- pg
+- jest
+- jestsorted
+- supertest
+- dotenv
+- cors
+- bcrypt
 
 1 - Clone the repo and install all dependancies
 
