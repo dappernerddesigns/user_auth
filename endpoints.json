@@ -15,7 +15,7 @@
     "description": "Authenticates user details sent in payload.",
     "example payload": {
       "email": "jersey@gmail.com",
-      "password": "password123"
+      "plainTextPassword": "password123"
     },
     "example Response": 200
   },

@@ -9,6 +9,8 @@ jobs:
   test:
     name: Tests
     runs-on: ubuntu-latest
+    env:
+      SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
