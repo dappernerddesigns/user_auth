@@ -92,7 +92,7 @@ describe("POST /api/users/login", () => {
     const {
       body: { msg, token },
     } = await request(app).post("/api/users/login").send(login).expect(200);
-
+    console.log(process.env.JWT_SECRET_KEY);
     expect(msg).toBe("Credential match found");
     const { username, id } = jwt.verify(token, process.env.JWT_SECRET_KEY);
     expect(username).toBe("Clarinda");
