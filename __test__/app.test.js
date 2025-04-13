@@ -132,18 +132,54 @@ describe("POST /api/users/login", () => {
 });
 describe("GET /api/users/:email", () => {
   test("200:Server responds with requested resource if user token is verified", async () => {
+    const token = jwt.sign(
+      { id: 1, username: "Karil" },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "2h",
+      }
+    );
     const {
       body: { user },
-    } = await request(app).get("/api/users/kgresch6@prlog.org").expect(200);
+    } = await request(app)
+      .get("/api/users/kgresch6@prlog.org")
+      .set("authorisation", `Bearer ${token}`)
+      .expect(200);
     const { username, email } = user;
 
     expect(username).toBe("Karil");
     expect(email).toBe("kgresch6@prlog.org");
   });
-  test("404:Server responds with Resource Not Found for a valid request with no rows", async () => {
+  test("401:Server responds with Unauthorised if token is missing", async () => {
     const {
       body: { msg },
-    } = await request(app).get("/api/users/jersey@gmail.com").expect(404);
-    expect(msg).toBe("Resource Not Found");
+    } = await request(app).get("/api/users/kgresch6@prlog.org").expect(401);
+    expect(msg).toBe("Unauthorised");
+  });
+  test("401:Server responds with Unauthorised if token is invalid", async () => {
+    const {
+      body: { msg },
+    } = await request(app)
+      .get("/api/users/kgresch6@prlog.org")
+      .set("authorisation", "bad token")
+      .expect(401);
+    expect(msg).toBe("Invalid or expired token");
+  });
+  test("401:Server responds with Unauthorised if token has expired", async () => {
+    const expiredToken = jwt.sign(
+      { id: 1, username: "Karil" },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: "1ms" }
+    );
+
+    await new Promise((resolve) => setTimeout(resolve, 15));
+
+    const {
+      body: { msg },
+    } = await request(app)
+      .get("/api/users/kgresch6@prlog.org")
+      .set("Authorisation", `Bearer ${expiredToken}`)
+      .expect(401);
+    expect(msg).toBe("Invalid or expired token");
   });
 });

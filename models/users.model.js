@@ -42,13 +42,21 @@ exports.authenticateUser = async (payload) => {
   return token;
 };
 
-exports.fetchUser = async (email) => {
-  const { rows } = await db.query(
-    "SELECT username, email FROM users WHERE email=$1",
-    [email]
-  );
-  if (rows.length === 0) {
-    return Promise.reject({ status: 404, msg: "Resource Not Found" });
+exports.fetchUser = async (email, authorisation) => {
+  if (!authorisation) {
+    return Promise.reject({ status: 401, msg: "Unauthorised" });
   }
-  return rows[0];
+  const [_, token] = authorisation.split(" ");
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const { rows } = await db.query("SELECT * FROM users WHERE email=$1", [
+      email,
+    ]);
+    const { user_id, username } = rows[0];
+    if (user_id === decoded.id && username === decoded.username) {
+      return rows[0];
+    }
+  } catch (err) {
+    return Promise.reject({ status: 401, msg: "Invalid or expired token" });
+  }
 };

@@ -1,12 +1,14 @@
 # User Auth
-<img src="https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white" /> <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" />
 
+<img src='https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E'><img src="https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white" /> <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" /> <img src='https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white'> <img src='https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white'>
 
 A small express server connected with a postgres database for the storage and authentication of users.
 
+Authorised users are provided a JWT token, allowing access to the `/api/users/:email` endpoint for profile management.
+
 Using github actions, this repo will run a small pipeline when pushing to main or any branch.
 
-If all unit tests pass, the latest commit will be deployed from Render - the live service can be found [here](https://user-auth-k2wn.onrender.com/api)
+If all unit tests pass, the latest commit will be deployed to Render - the live service can be found [here](https://user-auth-k2wn.onrender.com/api)
 
 ## 💫 Live api
 
@@ -35,7 +37,13 @@ npm i
 PGDATABASE=cromwell_tech
 ```
 
-3 - Run the following commands in order
+3- Create a .env file to hold the JWT secret key
+
+```
+JWT_SECRET_KEY=yoursupersecretkey
+```
+
+4 - Run the following commands in order
 
 ```
 npm run setup_dbs // establishes test and development databases
