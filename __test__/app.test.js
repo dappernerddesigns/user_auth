@@ -29,6 +29,20 @@ describe("POST /api/users/registration", () => {
       .send(newUser)
       .expect(201);
   });
+  test("201:Server responds with a status message after creating the resource", async () => {
+    const newUser = {
+      username: "Jersey",
+      email: "jersey@gmail.com",
+      password: "password123",
+    };
+    const {
+      body: { msg },
+    } = await request(app)
+      .post("/api/users/registration")
+      .send(newUser)
+      .expect(201);
+    expect(msg).toBe("Resource added to database");
+  });
   test("400:Server responds with bad request if the username already exists", async () => {
     const newUser = {
       username: "Karil",
@@ -67,6 +81,18 @@ describe("POST /api/users/login", () => {
     };
 
     await request(app).post("/api/users/login").send(login).expect(200);
+  });
+  test("200:Server responds with a status message if the resource exists", async () => {
+    const login = {
+      username: "Clarinda",
+      email: "cmatzel9@google.es",
+      plainTextPassword: "password1234",
+    };
+
+    const {
+      body: { msg },
+    } = await request(app).post("/api/users/login").send(login).expect(200);
+    expect(msg).toBe("Credential match found");
   });
   test("400:Server responds with a Bad Request if user email is not found in database", async () => {
     const login = {
