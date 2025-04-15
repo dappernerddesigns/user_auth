@@ -182,4 +182,20 @@ describe("GET /api/users/:email", () => {
       .expect(401);
     expect(msg).toBe("Invalid or expired token");
   });
+  test("401:Server responds with Unauthorised if a token is valid, but the request is for a different user profile", async () => {
+    const token = jwt.sign(
+      { id: 1, username: "Karil" },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "2h",
+      }
+    );
+    const {
+      body: { msg },
+    } = await request(app)
+      .get("/api/users/eblowfield7@linkedin.com")
+      .set("authorisation", `Bearer ${token}`)
+      .expect(401);
+    expect(msg).toBe("Unauthorised");
+  });
 });

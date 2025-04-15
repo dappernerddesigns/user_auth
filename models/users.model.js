@@ -55,6 +55,8 @@ exports.fetchUser = async (email, authorisation) => {
     const { user_id, username } = rows[0];
     if (user_id === decoded.id && username === decoded.username) {
       return rows[0];
+    } else {
+      return Promise.reject({ status: 401, msg: "Unauthorised" });
     }
   } catch (err) {
     return Promise.reject({ status: 401, msg: "Invalid or expired token" });
