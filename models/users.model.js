@@ -62,3 +62,31 @@ exports.fetchUser = async (email, authorisation) => {
     return Promise.reject({ status: 401, msg: "Invalid or expired token" });
   }
 };
+
+exports.removeUser = async (id, authorization) => {
+  if (!authorization) {
+    return Promise.reject({ status: 401, msg: "Unauthorised" });
+  }
+
+  const [_, token] = authorization.split(" ");
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+    const { rows } = await db.query(
+      "DELETE FROM users WHERE user_id=$1 RETURNING *",
+      [id]
+    );
+
+    const { user_id, username } = rows[0];
+    if (user_id === decoded.id && username === decoded.username) {
+      return;
+    } else {
+      return Promise.reject({ status: 401, msg: "Unauthorised" });
+    }
+  } catch (err) {
+    return Promise.reject({
+      status: 401,
+      msg: "Invalid or expired token",
+    });
+  }
+};

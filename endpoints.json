@@ -9,7 +9,7 @@
       "email": "jersey@gmail.com",
       "password": "password123"
     },
-    "example Response": 201
+    "example response": 201
   },
   "POST /api/users/login": {
     "description": "Authenticates user details sent in payload.",
@@ -19,8 +19,12 @@
     },
     "example Response": 200
   },
-  "Get /api/users/:email": {
+  "GET /api/users/:email": {
     "description": "Server responds with requested user's username and email.",
     "example response": { "username": "Jersey", "email": "jersey@gmail.com" }
+  },
+  "DELETE /api/users/:id": {
+    "description": "Server removes the record with matching id if requester has valid authorisaion",
+    "example response": 204
   }
 }

@@ -143,7 +143,7 @@ describe("GET /api/users/:email", () => {
       body: { user },
     } = await request(app)
       .get("/api/users/kgresch6@prlog.org")
-      .set("authorisation", `Bearer ${token}`)
+      .set("Authorization", `Bearer ${token}`)
       .expect(200);
     const { username, email } = user;
 
@@ -161,7 +161,7 @@ describe("GET /api/users/:email", () => {
       body: { msg },
     } = await request(app)
       .get("/api/users/kgresch6@prlog.org")
-      .set("authorisation", "bad token")
+      .set("Authorization", "bad token")
       .expect(401);
     expect(msg).toBe("Invalid or expired token");
   });
@@ -178,7 +178,7 @@ describe("GET /api/users/:email", () => {
       body: { msg },
     } = await request(app)
       .get("/api/users/kgresch6@prlog.org")
-      .set("Authorisation", `Bearer ${expiredToken}`)
+      .set("Authorization", `Bearer ${expiredToken}`)
       .expect(401);
     expect(msg).toBe("Invalid or expired token");
   });
@@ -194,7 +194,70 @@ describe("GET /api/users/:email", () => {
       body: { msg },
     } = await request(app)
       .get("/api/users/eblowfield7@linkedin.com")
-      .set("authorisation", `Bearer ${token}`)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(401);
+    expect(msg).toBe("Unauthorised");
+  });
+});
+describe("DELETE /api/users/:id", () => {
+  test("204:Server deletes the requested resource if user token is verified", async () => {
+    const token = jwt.sign(
+      { id: 1, username: "Karil" },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "2h",
+      }
+    );
+    await request(app)
+      .delete("/api/users/1")
+      .set("authorization", `Bearer ${token}`)
+      .expect(204);
+  });
+  test("401:Server responds with Unauthorised if token is missing", async () => {
+    const {
+      body: { msg },
+    } = await request(app).delete("/api/users/1").expect(401);
+    expect(msg).toBe("Unauthorised");
+  });
+  test("401:Server responds with Unauthorised if token is invalid", async () => {
+    const {
+      body: { msg },
+    } = await request(app)
+      .delete("/api/users/1")
+      .set("Authorization", "bad token")
+      .expect(401);
+    expect(msg).toBe("Invalid or expired token");
+  });
+  test("401:Server responds with Unauthorised if token has expired", async () => {
+    const expiredToken = jwt.sign(
+      { id: 1, username: "Karil" },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: "1ms" }
+    );
+
+    await new Promise((resolve) => setTimeout(resolve, 15));
+
+    const {
+      body: { msg },
+    } = await request(app)
+      .delete("/api/users/1")
+      .set("Authorization", `Bearer ${expiredToken}`)
+      .expect(401);
+    expect(msg).toBe("Invalid or expired token");
+  });
+  test("401:Server responds with Unauthorised if a token is valid, but the request is for a different user profile", async () => {
+    const token = jwt.sign(
+      { id: 1, username: "Karil" },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "2h",
+      }
+    );
+    const {
+      body: { msg },
+    } = await request(app)
+      .delete("/api/users/2")
+      .set("Authorization", `Bearer ${token}`)
       .expect(401);
     expect(msg).toBe("Unauthorised");
   });

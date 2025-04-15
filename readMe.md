@@ -14,6 +14,13 @@ If all unit tests pass, the latest commit will be deployed to Render - the live 
 
 This api has been hosted on Render [here](https://user-auth-k2wn.onrender.com/api). As this is a free tier for the purpose of this repo, the service will spin down from inactivity and can take up to 50 seconds to respond.
 
+## Available Endpoints
+
+- POST /api/users/register
+- POST /api/users/login
+- GET /api/users/:email
+- DELETE /api/users/:id
+
 ## 💻 Local Setup
 
 To run this locally users must have:
