@@ -26,9 +26,9 @@ exports.loginUser = async (req, res, next) => {
 
 exports.getUser = async (req, res, next) => {
   try {
-    const { email } = req.params;
+    const { id } = req.params;
     const { authorization } = req.headers;
-    const user = await fetchUser(email, authorization);
+    const user = await fetchUser(id, authorization);
     res.status(200).json({ user });
   } catch (err) {
     next(err);

@@ -19,7 +19,7 @@
     },
     "example Response": 200
   },
-  "GET /api/users/:email": {
+  "GET /api/users/:id": {
     "description": "Server responds with requested user's username and email.",
     "example response": { "username": "Jersey", "email": "jersey@gmail.com" }
   },

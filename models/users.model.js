@@ -42,16 +42,17 @@ exports.authenticateUser = async (payload) => {
   return token;
 };
 
-exports.fetchUser = async (email, authorisation) => {
+exports.fetchUser = async (id, authorisation) => {
   if (!authorisation) {
     return Promise.reject({ status: 401, msg: "Unauthorised" });
   }
   const [_, token] = authorisation.split(" ");
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const { rows } = await db.query("SELECT * FROM users WHERE email=$1", [
-      email,
-    ]);
+    const { rows } = await db.query(
+      "SELECT user_id, username,email FROM users WHERE user_id=$1",
+      [id]
+    );
     const { user_id, username } = rows[0];
     if (user_id === decoded.id && username === decoded.username) {
       return rows[0];

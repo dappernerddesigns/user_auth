@@ -130,7 +130,7 @@ describe("POST /api/users/login", () => {
     expect(msg).toBe("Unauthorised");
   });
 });
-describe("GET /api/users/:email", () => {
+describe("GET /api/users/:id", () => {
   test("200:Server responds with requested resource if user token is verified", async () => {
     const token = jwt.sign(
       { id: 1, username: "Karil" },
@@ -142,7 +142,7 @@ describe("GET /api/users/:email", () => {
     const {
       body: { user },
     } = await request(app)
-      .get("/api/users/kgresch6@prlog.org")
+      .get("/api/users/1")
       .set("Authorization", `Bearer ${token}`)
       .expect(200);
     const { username, email } = user;
@@ -153,14 +153,14 @@ describe("GET /api/users/:email", () => {
   test("401:Server responds with Unauthorised if token is missing", async () => {
     const {
       body: { msg },
-    } = await request(app).get("/api/users/kgresch6@prlog.org").expect(401);
+    } = await request(app).get("/api/users/1").expect(401);
     expect(msg).toBe("Unauthorised");
   });
   test("401:Server responds with Unauthorised if token is invalid", async () => {
     const {
       body: { msg },
     } = await request(app)
-      .get("/api/users/kgresch6@prlog.org")
+      .get("/api/users/1")
       .set("Authorization", "bad token")
       .expect(401);
     expect(msg).toBe("Invalid or expired token");
@@ -177,7 +177,7 @@ describe("GET /api/users/:email", () => {
     const {
       body: { msg },
     } = await request(app)
-      .get("/api/users/kgresch6@prlog.org")
+      .get("/api/users/1")
       .set("Authorization", `Bearer ${expiredToken}`)
       .expect(401);
     expect(msg).toBe("Invalid or expired token");
@@ -193,7 +193,7 @@ describe("GET /api/users/:email", () => {
     const {
       body: { msg },
     } = await request(app)
-      .get("/api/users/eblowfield7@linkedin.com")
+      .get("/api/users/2")
       .set("Authorization", `Bearer ${token}`)
       .expect(401);
     expect(msg).toBe("Unauthorised");
