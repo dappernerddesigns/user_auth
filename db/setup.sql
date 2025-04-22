@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS cromwell_tech_test;
+DROP DATABASE IF EXISTS usersDB_test;
 
-CREATE DATABASE cromwell_tech_test;
+CREATE DATABASE usersDB_test;
 
-DROP DATABASE IF EXISTS cromwell_tech;
+DROP DATABASE IF EXISTS usersDB;
 
-CREATE DATABASE cromwell_tech;
+CREATE DATABASE usersDB;
