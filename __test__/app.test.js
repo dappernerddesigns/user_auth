@@ -90,12 +90,12 @@ describe("POST /api/users/login", () => {
     };
 
     const {
-      body: { msg, token },
+      body: { id, token },
     } = await request(app).post("/api/users/login").send(login).expect(200);
 
-    expect(msg).toBe("Credential match found");
-    const { username, id } = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const { username, email } = jwt.verify(token, process.env.JWT_SECRET_KEY);
     expect(username).toBe("Clarinda");
+    expect(email).toBe("cmatzel9@google.es");
     expect(id).toBe(4);
   });
   test("400:Server responds with a Bad Request if user email is not found in database", async () => {

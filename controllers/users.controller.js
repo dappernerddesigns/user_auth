@@ -17,8 +17,8 @@ exports.registerUser = async (req, res, next) => {
 
 exports.loginUser = async (req, res, next) => {
   try {
-    const token = await authenticateUser(req.body);
-    res.status(200).json({ msg: "Credential match found", token });
+    const { token, id } = await authenticateUser(req.body);
+    res.status(200).json({ token, id });
   } catch (err) {
     next(err);
   }

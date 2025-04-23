@@ -33,13 +33,13 @@ exports.authenticateUser = async (payload) => {
   }
 
   const token = jwt.sign(
-    { id: user_id, username },
+    { id: user_id, username, email },
     process.env.JWT_SECRET_KEY,
     {
       expiresIn: "2h",
     }
   );
-  return token;
+  return { token, id: rows[0].user_id };
 };
 
 exports.fetchUser = async (id, authorisation) => {
